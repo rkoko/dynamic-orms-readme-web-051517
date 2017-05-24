@@ -37,10 +37,14 @@ class Song
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
+#tables names
   def table_name_for_insert
     self.class.table_name
   end
 
+#iterate over the column names, use the send method
+#w/each individual column name to invoke method by the same name;
+#then keeps that value
   def values_for_insert
     values = []
     self.class.column_names.each do |col_name|
@@ -49,6 +53,7 @@ class Song
     values.join(", ")
   end
 
+#columns names; removes the id column; adds in the comma to have "name, album"
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
@@ -59,6 +64,3 @@ class Song
   end
 
 end
-
-
-
